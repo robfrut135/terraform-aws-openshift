@@ -1,35 +1,20 @@
-output "master_url" {
-  value       = "https://master.${var.platform_default_subdomain}:8443"
-  description = "OpenShift master(console) domain name"
+output "platform_name" {
+  value       = "${var.platform_name}"
+  description = "This platform name"
 }
 
-output "bastion_ssh" {
-  value       = "${module.infrastructure.bastion_ssh_user}@${module.infrastructure.bastion_public_dns}"
+output "master_public_url" {
+  value       = "${module.openshift.master_public_url}"
+  description = "OpenShift master URL"
+}
+
+output "bastion_ssh_spec" {
+  value       = "${module.infra.bastion_ssh_user}@${module.infra.bastion_endpoint}"
   description = "Bastion SSH info for login. 'ssh `terraform output bastion_ssh`'"
-}
-
-output "master_public_lb_addrs" {
-  value       = "${module.infrastructure.master_public_lb_addrs}"
-  description = "Master LB's static IPs"
-}
-
-output "platform_public_lb_addrs" {
-  value       = "${module.infrastructure.platform_public_lb_addrs}"
-  description = "Platform LB's static IPs"
-}
-
-output "bastion_public_dns" {
-  value       = "${module.domain.bastion_public_dns}"
-  description = "Bastion domain name"
-}
-
-output "public_dns_nameservers" {
-  value       = "${module.domain.public_dns_nameservers}"
-  description = "List of nameservers for delegation. Please set the nameservers in the parent hosted zone."
 }
 
 output "platform_private_key" {
   sensitive   = true
-  value       = "${module.infrastructure.platform_private_key}"
+  value       = "${module.infra.platform_private_key}"
   description = "private key for instances"
 }

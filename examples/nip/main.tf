@@ -1,10 +1,10 @@
 module "network" {
-  source        = "modules/network"
+  source        = "../../modules/network"
   platform_name = "${var.platform_name}"
 }
 
 module "infra" {
-  source = "modules/infra"
+  source = "../../modules/infra"
 
   platform_name = "${var.platform_name}"
   use_community = "${var.use_community}"
@@ -24,17 +24,8 @@ module "infra" {
   compute_node_instance_type = "${var.compute_node_instance_type}"
 }
 
-module "domain" {
-  source = "modules/domain"
-
-  platform_name                       = "${var.platform_name}"
-  platform_domain                     = "${var.platform_domain}"
-  platform_domain_administrator_email = "${var.platform_domain_administrator_email}"
-  public_lb_arn                       = "${module.infra.public_lb_arn}"
-}
-
 module "openshift" {
-  source = "modules/openshift"
+  source = "../../modules/openshift"
 
   platform_name = "${var.platform_name}"
   use_community = "${var.use_community}"
@@ -46,15 +37,6 @@ module "openshift" {
   rhn_password            = "${var.rhn_password}"
   rh_subscription_pool_id = "${var.rh_subscription_pool_id}"
 
-  master_domain                       = "${module.infra.master_domain}"
-  platform_domain                     = "${var.platform_domain}"
-  public_certificate_pem              = "${module.domain.public_certificate_pem}"
-  public_certificate_key              = "${module.domain.public_certificate_key}"
-  public_certificate_intermediate_pem = "${module.domain.public_certificate_intermediate_pem}"
-
-  identity_providers         = "${var.identity_providers}"
-
-  google_client_id           = "${var.google_client_id}"
-  google_client_secret       = "${var.google_client_secret}"
-  google_client_domain       = "${var.google_client_domain}"
+  master_domain   = "${module.infra.master_domain}"
+  platform_domain = "${element(module.infra.platform_public_ip_set, 0)}.nip.io"
 }

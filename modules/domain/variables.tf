@@ -1,18 +1,7 @@
-variable "platform_vpc_id" {
-}
+variable "platform_name" {}
 
-variable "platform_name" {
-}
+variable "platform_domain" {}
 
-variable "bastion_ip" {
-}
+variable "platform_domain_administrator_email" {}
 
-variable "platform_default_subdomain" {
-}
-variable "platform_public_lb_arn" {
-}
-
-variable "master_public_dns_name" {
-}
-variable "master_public_lb_arn" {
-}
+variable "public_lb_arn" {}
